@@ -1,21 +1,31 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int s[1440];
-int n,t,m,c;
+int s[1440]; // 陣列 s 用來儲存每一輛車到達岸邊的時間（最多 1440 輛）
+int n, t, m, c; // n: 船容量, t: 單程時間, m: 車子總數, c: 測試資料筆數
 
 int main()
 {
-    cin>>c;
-    while(c--)
+    cin >> c; // 讀取總共有幾組測試資料
+    while (c--) // 循環處理每一組資料
     {
-        cin>>n>>t>>m;
-        t*=2;
-        int tot=0,act=0;
-        for(int i=0;i<m;i++) cin>>s[i];
-        for(int i=(m+n-1)%n;i<m;i+=n)
-            act=tot>s[i]?tot:s[i],tot=act+t;
-        cout<<tot-t/2<<" "<<(m+n-1)/n<<endl;
+        cin >> n >> t >> m; // 讀取當前的船容量、單程時間與車子數量
+        t *= 2; // 將 t 變成往返時間（2倍單程），因為船必須回來才能載下一批
+        
+        int tot = 0, act = 0; // tot: 船回到起點的時間, act: 實際開始裝載的時間
+        
+        for (int i = 0; i < m; i++) cin >> s[i]; // 讀取每輛車到達的時間
+        // i 是每一趟「最後一輛車」的索引。
+        // (m + n - 1) % n 決定了第一趟要載幾輛車，確保後續每一趟都能載滿 n 輛。
+        for (int i = (m + n - 1) % n; i < m; i += n)
+            // act (裝載時間) = 取「船回到岸邊的時間(tot)」與「最後一輛車到達時間(s[i])」的較大者
+            // tot (下一次回到岸邊的時間) = 裝載時間 + 往返時間(t)
+            act = (tot > s[i]) ? tot : s[i], tot = act + t;
+
+        // 最後輸出：
+        // tot - t/2：最後一趟送到對岸後不需要再回來，所以減掉一個單程時間。
+        // (m + n - 1) / n：計算總共運送了幾趟（無條件進位法）。
+        cout << tot - t / 2 << " " << (m + n - 1) / n << endl;
     }
     return 0;
 }
