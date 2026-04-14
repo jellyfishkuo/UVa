@@ -22,9 +22,7 @@ int main()
             ans[i]++;
         }
         cout<<ans[0];
-
-        for(int i=1;i<cnt;i++)
-            cout<<" "<<ans[i];
+        for(int i=1;i<cnt;i++) cout<<" "<<ans[i];
         cout<<endl;
         if(m) cout<<endl;
     }
